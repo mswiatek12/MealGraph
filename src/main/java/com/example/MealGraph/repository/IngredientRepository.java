@@ -14,4 +14,9 @@ public interface IngredientRepository extends Neo4jRepository<Ingredient, String
     List<Ingredient> findByName(String name);
 
     List<Ingredient> findByCategoriesName(String categoryName);
+
+    List<Ingredient> findByIsAllergen(boolean isAllergen);
+
+    List<Ingredient> findByCaloriesLessThan(Integer calories);
+
 }

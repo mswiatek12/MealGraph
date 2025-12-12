@@ -5,6 +5,8 @@ import com.example.MealGraph.model.Dish;
 import com.example.MealGraph.model.Ingredient;
 import com.example.MealGraph.service.DishService;
 import com.example.MealGraph.service.IngredientService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +39,29 @@ public class GraphController {
         return dishService.findDishByDifficulty(difficulty);
     }
 
+    @GetMapping("/dish")
+    public List<Dish> getDishByIngredient(@RequestBody List<String> ingredients) {
+        return dishService.getDishByIngredient(ingredients);
+    }
+
+    @PostMapping("/dish")
+    public ResponseEntity<Dish> addDish(@RequestBody Dish dish) {
+        Dish savedDish = dishService.addDish(dish);
+        return new ResponseEntity<>(savedDish, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/dish/{name}")
+    public ResponseEntity<Dish> updateDish(@RequestParam String name, @RequestBody Dish dish) {
+        Dish savedDish = dishService.updateDish(name, dish);
+        return new ResponseEntity<>(savedDish, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/dish")
+    public ResponseEntity<Void> deleteDish(@RequestBody Dish dish) {
+        dishService.deleteDish(dish);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(value = "/ingredient", params = "name")
     public List<Ingredient> getIngredientByName(@RequestParam String name) {
         return ingredientService.findByName(name);
@@ -47,6 +72,13 @@ public class GraphController {
         return ingredientService.findAllByCategoriesName(category);
     }
 
+    @GetMapping("/ingredient/safe")
+    public List<Ingredient> getIngredientSafe() {
+        return ingredientService.findByIsAllergen(false);
+    }
 
-
+    @GetMapping(value = "/ingredient", params = "calories")
+    public List<Ingredient> getIngredientByCalories(@RequestParam String calories) {
+        return ingredientService.findByCaloriesLessThan(calories)
+    }
 }

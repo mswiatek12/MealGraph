@@ -22,4 +22,12 @@ public class IngredientService {
     public List<Ingredient> findAllByCategoriesName(String name) {
         return ingredientRepository.findByCategoriesName(name);
     }
+
+    public List<Ingredient> findByCaloriesLessThan(String calories) {
+        return ingredientRepository.findByCaloriesLessThan(Integer.parseInt(calories));
+    }
+
+    public List<Ingredient> findByIsAllergen(boolean isAllergen) {
+        return ingredientRepository.findByIsAllergen(isAllergen);
+    }
 }

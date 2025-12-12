@@ -27,4 +27,34 @@ public class DishService {
         return dishRepository.findByDifficulty(difficulty);
     }
 
+    public List<Dish> getDishByIngredient(List<String> ingredients) {
+        return dishRepository.findByIngredients(ingredients);
+    }
+
+    public Dish addDish(Dish dish) {
+        return dishRepository.save(dish);
+    }
+
+    public Dish updateDish(String name, Dish dishFromRequest) {
+        return dishRepository.findById(name)
+                .map(existingDish -> {
+                    if(dishFromRequest.getDifficulty() != null) {
+                        existingDish.setDifficulty(dishFromRequest.getDifficulty());
+                    }
+                    if(dishFromRequest.getTimeMinutes() != null) {
+                        existingDish.setTimeMinutes(dishFromRequest.getTimeMinutes());
+                    }
+                    if(dishFromRequest.getIngredients() != null) {
+                        existingDish.setIngredients(dishFromRequest.getIngredients());
+                    }
+
+                    return dishRepository.save(existingDish);
+                })
+                .orElse(null);
+    }
+
+    public void deleteDish(Dish dish) {
+        dishRepository.deleteById(dish.getName());
+    }
+
 }

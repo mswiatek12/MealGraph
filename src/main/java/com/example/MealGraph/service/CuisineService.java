@@ -12,5 +12,4 @@ public class CuisineService {
         this.cuisineRepository = cuisineRepository;
     }
 
-
 }
