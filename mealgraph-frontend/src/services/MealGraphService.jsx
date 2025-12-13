@@ -5,6 +5,19 @@ const API_URL = "http://localhost:8080/app";
 
 class MealGraphService {
 
+    // ... existing dish methods ...
+
+    // --- New Ingredient Methods ---
+    getAllIngredients() {
+        return axios.get(`${API_URL}/ingredient`);
+    }
+
+    addIngredient(ingredient) {
+        return axios.post(`${API_URL}/ingredient`, ingredient);
+    }
+
+    // ... existing ingredient methods ...
+
     getDishByName(name) {
         return axios.get(`${API_URL}/dish`, { params: { name } });
     }
@@ -17,9 +30,8 @@ class MealGraphService {
         return axios.get(`${API_URL}/dish`, { params: { difficulty } });
     }
     getDishByIngredient(ingredientsList) {
-        return axios.get(`${API_URL}/dish`, {
-            data: ingredientsList,
-            headers: { 'Content-Type': 'application/json' }
+        return axios.get(`${API_URL}/dish/search`, {
+            params: { ingredients: ingredientsList.join(',') } // Fixed: Use params for GET with list
         });
     }
 

@@ -30,4 +30,8 @@ public class IngredientService {
     public List<Ingredient> findByIsAllergen(boolean isAllergen) {
         return ingredientRepository.findByIsAllergen(isAllergen);
     }
+
+    public Ingredient addIngredient(Ingredient ingredient) {
+        return ingredientRepository.save(ingredient);
+    }
 }

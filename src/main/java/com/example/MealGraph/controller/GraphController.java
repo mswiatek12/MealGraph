@@ -26,9 +26,11 @@ public class GraphController {
     }
 
     @GetMapping
-    public List<Dish> getAllDishes() { return dishService.getAllDishes(); }
+    public List<Dish> getAllDishes() {
+        return dishService.getAllDishes();
+    }
 
-    @GetMapping(value ="/dish", params = "name")
+    @GetMapping(value = "/dish", params = "name")
     public List<Dish> getDishByName(@RequestParam String name) {
         return dishService.findDishByName(name);
     }
@@ -84,5 +86,11 @@ public class GraphController {
     @GetMapping(value = "/ingredient", params = "calories")
     public List<Ingredient> getIngredientByCalories(@RequestParam String calories) {
         return ingredientService.findByCaloriesLessThan(calories);
+    }
+
+    @PostMapping("/ingredient")
+    public ResponseEntity<Ingredient> addIngredient(@RequestBody Ingredient ingredient){
+        Ingredient saved = ingredientService.addIngredient(ingredient);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 }
