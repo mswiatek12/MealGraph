@@ -68,6 +68,11 @@ public class GraphController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/ingredient")
+    public List<Ingredient> getAllIngredients() {
+        return ingredientService.getAll();
+    }
+
     @GetMapping(value = "/ingredient", params = "name")
     public List<Ingredient> getIngredientByName(@RequestParam String name) {
         return ingredientService.findByName(name);

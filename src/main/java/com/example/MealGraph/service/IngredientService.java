@@ -15,23 +15,17 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
+    public List<Ingredient> getAll() { return ingredientRepository.findAll(); }
+
     public List<Ingredient> findByName(String name) {
         return ingredientRepository.findByName(name);
     }
 
-    public List<Ingredient> findAllByCategoriesName(String name) {
-        return ingredientRepository.findByCategoriesName(name);
-    }
+    public List<Ingredient> findAllByCategoriesName(String name) { return ingredientRepository.findByCategoriesName(name); }
 
-    public List<Ingredient> findByCaloriesLessThan(String calories) {
-        return ingredientRepository.findByCaloriesLessThan(Integer.parseInt(calories));
-    }
+    public List<Ingredient> findByCaloriesLessThan(String calories) { return ingredientRepository.findByCaloriesLessThan(Integer.parseInt(calories)); }
 
-    public List<Ingredient> findByIsAllergen(boolean isAllergen) {
-        return ingredientRepository.findByIsAllergen(isAllergen);
-    }
+    public List<Ingredient> findByIsAllergen(boolean isAllergen) { return ingredientRepository.findByIsAllergen(isAllergen); }
 
-    public Ingredient addIngredient(Ingredient ingredient) {
-        return ingredientRepository.save(ingredient);
-    }
+    public Ingredient addIngredient(Ingredient ingredient) { return ingredientRepository.save(ingredient); }
 }

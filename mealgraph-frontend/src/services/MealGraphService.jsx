@@ -16,8 +16,6 @@ class MealGraphService {
         return axios.post(`${API_URL}/ingredient`, ingredient);
     }
 
-    // ... existing ingredient methods ...
-
     getDishByName(name) {
         return axios.get(`${API_URL}/dish`, { params: { name } });
     }
