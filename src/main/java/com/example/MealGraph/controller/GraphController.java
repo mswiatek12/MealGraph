@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.List;
 
 @RestController
@@ -74,8 +75,13 @@ public class GraphController {
     }
 
     @GetMapping(value = "/ingredient", params = "name")
-    public List<Ingredient> getIngredientByName(@RequestParam String name) {
-        return ingredientService.findByName(name);
+    public Ingredient getIngredientByName(@RequestParam String name) {
+        try {
+            return ingredientService.findByName(name).getFirst();
+        } catch (NullPointerException e) {
+            Throwable cause = e.getCause();
+        }
+        return null;
     }
 
     @GetMapping(value = "/ingredient", params = "category")

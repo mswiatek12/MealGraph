@@ -16,7 +16,7 @@ const IngredientSearch = () => {
     };
     const handleSearch = async () => {
         try {
-            const res = await MealGraphService.getAllIngredients();
+            const res = await MealGraphService.getIngredientByName();
             setIngredients(res.data);
         } catch (err) {
             console.error(err);
