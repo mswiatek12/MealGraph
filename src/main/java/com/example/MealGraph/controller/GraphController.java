@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app")
+@CrossOrigin(origins = "*")
 public class GraphController {
 
     private DishService dishService;
@@ -23,6 +24,9 @@ public class GraphController {
         this.dishService = dishService;
         this.ingredientService = ingredientService;
     }
+
+    @GetMapping
+    public List<Dish> getAllDishes() { return dishService.getAllDishes(); }
 
     @GetMapping(value ="/dish", params = "name")
     public List<Dish> getDishByName(@RequestParam String name) {
@@ -39,8 +43,8 @@ public class GraphController {
         return dishService.findDishByDifficulty(difficulty);
     }
 
-    @GetMapping("/dish")
-    public List<Dish> getDishByIngredient(@RequestBody List<String> ingredients) {
+    @GetMapping("/dish/search")
+    public List<Dish> getDishByIngredient(@RequestParam List<String> ingredients) {
         return dishService.getDishByIngredient(ingredients);
     }
 
@@ -79,6 +83,6 @@ public class GraphController {
 
     @GetMapping(value = "/ingredient", params = "calories")
     public List<Ingredient> getIngredientByCalories(@RequestParam String calories) {
-        return ingredientService.findByCaloriesLessThan(calories)
+        return ingredientService.findByCaloriesLessThan(calories);
     }
 }

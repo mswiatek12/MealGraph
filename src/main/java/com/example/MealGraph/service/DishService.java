@@ -15,6 +15,8 @@ public class DishService {
         this.dishRepository = dishRepository;
     }
 
+    public List<Dish> getAllDishes() { return dishRepository.findAll(); }
+
     public List<Dish> findDishByName(String name) {
         return dishRepository.findByName(name);
     }
