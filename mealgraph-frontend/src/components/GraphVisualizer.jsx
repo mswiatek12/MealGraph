@@ -1,72 +1,74 @@
 // src/components/GraphVisualizer.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import axios from 'axios';
 
-const GraphVisualizer = () => {
+const GraphVisualizer = ({ dishes }) => {
     const [graphData, setGraphData] = useState({ nodes: [], links: [] });
     const graphRef = useRef();
 
     useEffect(() => {
-        // Fetch all dishes from your endpoint
-        axios.get('http://localhost:8080/app')
-            .then(response => {
-                const dishes = response.data;
-                const nodesMap = new Map();
-                const links = [];
+        if (!dishes || dishes.length === 0) {
+            setGraphData({ nodes: [], links: [] });
+            return;
+        }
 
-                dishes.forEach(dish => {
-                    // 1. Add Dish Node
-                    if (!nodesMap.has(dish.name)) {
-                        nodesMap.set(dish.name, {
-                            id: dish.name,
-                            group: 'Dish',
-                            val: 15,
-                            color: '#FF6B6B'
+        const nodesMap = new Map();
+        const links = [];
+
+        dishes.forEach(dish => {
+            if (!nodesMap.has(dish.name)) {
+                nodesMap.set(dish.name, {
+                    id: dish.name,
+                    group: 'Dish',
+                    val: 15,
+                    color: '#FF6B6B'
+                });
+            }
+
+            if(dish.ingredients) {
+                dish.ingredients.forEach(ing => {
+                    if (!nodesMap.has(ing.name)) {
+                        nodesMap.set(ing.name, {
+                            id: ing.name,
+                            group: 'Ingredient',
+                            val: 8,
+                            color: '#4ECDC4'
                         });
                     }
-
-                    dish.ingredients.forEach(ing => {
-                        if (!nodesMap.has(ing.name)) {
-                            nodesMap.set(ing.name, {
-                                id: ing.name,
-                                group: 'Ingredient',
-                                val: 8,
-                                color: '#4ECDC4'
-                            });
-                        }
-                        links.push({ source: dish.name, target: ing.name, color: '#e0e0e0' });
-                    });
-
-                    dish.cuisine.forEach(c => {
-                        if (!nodesMap.has(c.name)) {
-                            nodesMap.set(c.name, {
-                                id: c.name,
-                                group: 'Cuisine',
-                                val: 12,
-                                color: '#FFE66D'
-                            });
-                        }
-                        links.push({ source: dish.name, target: c.name, color: '#FFE66D' });
-                    });
+                    links.push({ source: dish.name, target: ing.name, color: '#e0e0e0' });
                 });
+            }
 
-                setGraphData({
-                    nodes: Array.from(nodesMap.values()),
-                    links: links
+            if(dish.cuisine) {
+                dish.cuisine.forEach(c => {
+                    if (!nodesMap.has(c.name)) {
+                        nodesMap.set(c.name, {
+                            id: c.name,
+                            group: 'Cuisine',
+                            val: 12,
+                            color: '#FFE66D'
+                        });
+                    }
+                    links.push({ source: dish.name, target: c.name, color: '#FFE66D' });
                 });
-            })
-            .catch(error => console.error("Error fetching graph data:", error));
-    }, []);
+            }
+        });
+
+        setGraphData({
+            nodes: Array.from(nodesMap.values()),
+            links: links
+        });
+
+    }, [dishes]);
 
     useEffect(() => {
-        if (graphRef.current) {
+        if (graphRef.current && graphData.nodes.length > 0) {
             graphRef.current.d3Force('charge').strength(-200);
 
             setTimeout(() => {
                 if(graphRef.current) {
-                    graphRef.current.d3Force('charge').strength(-400);
-                    graphRef.current.d3Force('link').distance(70);
+                    graphRef.current.d3Force('charge').strength(-400); // Strong repulsion
+                    graphRef.current.d3Force('link').distance(70);     // Longer links
                 }
             }, 100);
         }
@@ -106,15 +108,15 @@ const GraphVisualizer = () => {
                             ctx.fillText(label, node.x, node.y + radius + 1);
                         }}
 
-                        // Optimize interaction
-                        nodeLabel="id" // Keep tooltip on hover as backup
+                        nodeLabel="id"
                         linkDirectionalParticles={1}
                         linkDirectionalParticleSpeed={0.005}
                     />
                 ) : (
-                    <div className="d-flex justify-content-center align-items-center h-100">
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                    <div className="d-flex justify-content-center align-items-center h-100 text-muted">
+                        <div className="text-center">
+                            <h4>Graph is empty</h4>
+                            <p>Perform a search in the Dish Manager below to visualize results.</p>
                         </div>
                     </div>
                 )}

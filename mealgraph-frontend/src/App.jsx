@@ -1,11 +1,14 @@
 // src/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DishManager from './components/DishManager';
 import IngredientSearch from './components/IngredientSearch';
-import GraphVisualizer from './components/GraphVisualizer'; // Import here
+import GraphVisualizer from './components/GraphVisualizer';
 
 function App() {
+    // State to hold the dishes for the graph
+    const [graphDishes, setGraphDishes] = useState([]);
+
     return (
         <div className="App">
             <nav className="navbar navbar-dark bg-dark mb-4">
@@ -17,11 +20,13 @@ function App() {
             <div className="container">
                 <div className="row">
                     <div className="col-12 mb-5">
-                        <GraphVisualizer />
+                        {/* Pass the search results to the Visualizer */}
+                        <GraphVisualizer dishes={graphDishes} />
                     </div>
 
                     <div className="col-12 mb-5">
-                        <DishManager />
+                        {/* Pass the setter function to the Manager */}
+                        <DishManager onSearch={setGraphDishes} />
                     </div>
                     <div className="col-12 border-top pt-4">
                         <IngredientSearch />
