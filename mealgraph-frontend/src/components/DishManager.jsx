@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { StarIcon, ChevronDownIcon, ChevronUpIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
 import MealGraphService from '../services/MealGraphService.jsx';
+import {MagnifyingGlassIcon} from "@heroicons/react/16/solid/index.js";
 
 const DishManager = ({ onSearch }) => {
     // --- Data State ---
@@ -145,7 +146,7 @@ const DishManager = ({ onSearch }) => {
                                 <option value="difficulty">Difficulty</option>
                             </select>
                             <input className="form-control" placeholder="Search..." value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
-                            <button className="btn btn-primary" type="submit">Search</button>
+                            <button className="btn btn-primary d-flex align-item-center gap-2" type="submit"> <MagnifyingGlassIcon width={20} /> Search</button>
                         </form>
                     </div>
                 </div>
