@@ -11,15 +11,11 @@ public class IngredientService {
 
     private IngredientRepository ingredientRepository;
 
-    public IngredientService(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
-    }
+    public IngredientService(IngredientRepository ingredientRepository) { this.ingredientRepository = ingredientRepository; }
 
     public List<Ingredient> getAll() { return ingredientRepository.findAll(); }
 
-    public List<Ingredient> findByName(String name) {
-        return ingredientRepository.findByName(name);
-    }
+    public List<Ingredient> findByNameContainingIgnoreCase(String name){ return ingredientRepository.findByName(name); }
 
     public List<Ingredient> findAllByCategoriesName(String name) { return ingredientRepository.findByCategoriesName(name); }
 

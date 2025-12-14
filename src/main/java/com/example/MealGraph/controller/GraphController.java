@@ -75,13 +75,8 @@ public class GraphController {
     }
 
     @GetMapping(value = "/ingredient", params = "name")
-    public Ingredient getIngredientByName(@RequestParam String name) {
-        try {
-            return ingredientService.findByName(name).getFirst();
-        } catch (NullPointerException e) {
-            Throwable cause = e.getCause();
-        }
-        return null;
+    public List<Ingredient> getIngredientByName(@RequestParam String name) {
+        return ingredientService.findByNameContainingIgnoreCase(name);
     }
 
     @GetMapping(value = "/ingredient", params = "category")

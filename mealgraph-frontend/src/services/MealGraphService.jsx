@@ -1,13 +1,9 @@
-// src/services/MealGraphService.jsx
 import axios from 'axios';
 
-const API_URL = "http://localhost:8080/app";
+const API_URL = "/app";
 
 class MealGraphService {
 
-    // ... existing dish methods ...
-
-    // --- New Ingredient Methods ---
     getAllIngredients() {
         return axios.get(`${API_URL}/ingredient`);
     }

@@ -1,20 +1,15 @@
-// src/components/DishManager.jsx
 import React, { useState, useEffect } from 'react';
 import { StarIcon, ChevronDownIcon, ChevronUpIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
 import MealGraphService from '../services/MealGraphService.jsx';
 import {MagnifyingGlassIcon} from "@heroicons/react/16/solid/index.js";
 
 const DishManager = ({ onSearch }) => {
-    // --- Data State ---
     const [allIngredients, setAllIngredients] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
 
-    // --- UI State (Collapsible Sections) ---
-    // false = collapsed (zwinięty) by default
     const [isDishFormOpen, setIsDishFormOpen] = useState(false);
     const [isIngredientFormOpen, setIsIngredientFormOpen] = useState(false);
 
-    // --- Form States ---
     const [newDish, setNewDish] = useState({
         name: '',
         difficulty: 1,
@@ -29,14 +24,12 @@ const DishManager = ({ onSearch }) => {
         isAllergen: false
     });
 
-    // --- Init: Load Ingredients for Dropdown ---
     useEffect(() => {
         loadIngredients();
     }, []);
 
     const loadIngredients = async () => {
         try {
-            // Ensure MealGraphService has getAllIngredients() method
             const res = await MealGraphService.getAllIngredients();
             setAllIngredients(res.data);
         } catch (e) {
@@ -44,29 +37,26 @@ const DishManager = ({ onSearch }) => {
         }
     };
 
-    // --- Handler: Add New Ingredient ---
     const handleAddIngredient = async (e) => {
         e.preventDefault();
         try {
             await MealGraphService.addIngredient(newIngredient);
             alert("Ingredient Added!");
             setNewIngredient({ name: '', calories: 0, isAllergen: false });
-            loadIngredients(); // Refresh the dropdown list immediately
-            setIsIngredientFormOpen(false); // Close form after success
+            loadIngredients();
+            setIsIngredientFormOpen(false);
         } catch (error) {
             console.error(error);
             alert("Failed to add ingredient");
         }
     };
 
-    // --- Handler: Add New Dish ---
     const handleDishInputChange = (e) => {
         const { name, value } = e.target;
         setNewDish({ ...newDish, [name]: value });
     };
 
     const handleIngredientSelect = (e) => {
-        // Handle multi-select logic
         const options = e.target.options;
         const selected = [];
         for (let i = 0; i < options.length; i++) {
@@ -80,7 +70,6 @@ const DishManager = ({ onSearch }) => {
     const handleAddDish = async (e) => {
         e.preventDefault();
 
-        // Prepare data for backend
         const cuisineObjs = newDish.cuisine.split(',').map(c => ({ name: c.trim() }));
         const ingredientObjs = newDish.selectedIngredients.map(name => ({ name: name }));
 
@@ -96,14 +85,13 @@ const DishManager = ({ onSearch }) => {
             await MealGraphService.addDish(dishPayload);
             alert("Dish added successfully!");
             setNewDish({ name: '', difficulty: 1, timeMinutes: 0, cuisine: '', selectedIngredients: [] });
-            setIsDishFormOpen(false); // Close form (zwiń) after success
+            setIsDishFormOpen(false);
         } catch (error) {
             console.error("Error adding dish", error);
             alert("Failed to add dish");
         }
     };
 
-    // --- Handlers: Search & Delete ---
     const [searchType, setSearchType] = useState('name');
     const [searchValue, setSearchValue] = useState('');
 
@@ -135,7 +123,6 @@ const DishManager = ({ onSearch }) => {
     return (
         <div className="container mt-4">
 
-            {/* 1. TOP ROW: Search & Add Ingredient Button */}
             <div className="row mb-3">
                 <div className="col-md-8">
                     <div className="card p-3 shadow-sm">
@@ -160,7 +147,6 @@ const DishManager = ({ onSearch }) => {
                 </div>
             </div>
 
-            {/* 2. COLLAPSIBLE: Create Ingredient Form */}
             {isIngredientFormOpen && (
                 <div className="card p-3 mb-4 border-success shadow-sm">
                     <h5 className="text-success border-bottom pb-2">New Ingredient Details</h5>
@@ -186,7 +172,6 @@ const DishManager = ({ onSearch }) => {
                 </div>
             )}
 
-            {/* 3. COLLAPSIBLE (ZWIJANA): Add Dish Form */}
             <div className="card mb-4 border-primary shadow-sm">
                 <div
                     className="card-header bg-primary text-white d-flex justify-content-between align-items-center"
@@ -196,7 +181,6 @@ const DishManager = ({ onSearch }) => {
                     <h5 className="m-0 d-flex align-items-center gap-2">
                         <PlusCircleIcon width={24}/> Add New Dish
                     </h5>
-                    {/* The Icon changes based on state to indicate collapse/expand */}
                     {isDishFormOpen ? <ChevronUpIcon width={24}/> : <ChevronDownIcon width={24}/>}
                 </div>
 
@@ -241,7 +225,6 @@ const DishManager = ({ onSearch }) => {
                 )}
             </div>
 
-            {/* 4. Results List */}
             <div className="row">
                 {searchResults.map((dish) => (
                     <div className="col-md-4 mb-3" key={dish.name}>

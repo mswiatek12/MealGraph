@@ -6,7 +6,6 @@ import IngredientSearch from './components/IngredientSearch';
 import GraphVisualizer from './components/GraphVisualizer';
 
 function App() {
-    // State to hold the dishes for the graph
     const [graphDishes, setGraphDishes] = useState([]);
 
     return (
@@ -25,7 +24,6 @@ function App() {
                     </div>
 
                     <div className="col-12 mb-5">
-                        {/* Pass the setter function to the Manager */}
                         <DishManager onSearch={setGraphDishes} />
                     </div>
                     <div className="col-12 border-top pt-4">

@@ -1,4 +1,3 @@
-// src/components/IngredientSearch.jsx
 import React, { useState } from 'react';
 import MealGraphService from '../services/MealGraphService.jsx';
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";

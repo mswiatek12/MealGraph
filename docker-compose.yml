@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: .
+    container_name: mealgraph-backend
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  frontend:
+    build: ./mealgraph-frontend
+    container_name: mealgraph-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

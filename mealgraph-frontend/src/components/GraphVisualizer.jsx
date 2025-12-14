@@ -1,4 +1,3 @@
-// src/components/GraphVisualizer.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 
